@@ -1,8 +1,8 @@
-var BOSH_SERVICE = 'http://192.168.10.11/http-bind';
+var BOSH_SERVICE = 'http://192.168.10.5/http-bind';
 
 var WebClient = {
     connection: null,
-    
+
     jid_to_id: function (jid) {
         return Strophe.getBareJidFromJid(jid)
             .replace(/@/g, "-")
@@ -83,7 +83,7 @@ var WebClient = {
             } else {
                 // contact is being added or modified
                 var contact_html = "<li id='" + jid_id + "'>" +
-                    "<div class='" + 
+                    "<div class='" +
                     ($('#' + jid_id).attr('class') || "roster-contact offline") +
                     "'>" +
                     "<div class='roster-name'>" +
@@ -114,7 +114,7 @@ var WebClient = {
                 "<div class='chat-messages'></div>" +
                 "<input type='text' class='chat-input'>");
         }
-        
+
         $('#chat-' + jid_id).data('jid', full_jid);
 
         $('#chat-area').tabs('select', '#chat-' + jid_id);
@@ -195,7 +195,7 @@ var WebClient = {
     insert_contact: function (elem) {
         var jid = elem.find('.roster-jid').text();
         var pres = WebClient.presence_value(elem.find('.roster-contact'));
-        
+
         var contacts = $('#roster-area li');
 
         if (contacts.length > 0) {
@@ -239,7 +239,7 @@ $(document).ready(function () {
                     jid: $('#jid').val().toLowerCase(),
                     password: $('#password').val()
                 });
-                
+
                 $('#password').val('');
                 $(this).dialog('close');
             }
@@ -260,7 +260,7 @@ $(document).ready(function () {
 
                 $('#contact-jid').val('');
                 $('#contact-name').val('');
-                
+
                 $(this).dialog('close');
             }
         }
@@ -293,7 +293,7 @@ $(document).ready(function () {
                 WebClient.connection.send($pres({
                     to: WebClient.pending_subscriber,
                     "type": "subscribe"}));
-                
+
                 WebClient.pending_subscriber = null;
 
                 $(this).dialog('close');
@@ -336,7 +336,7 @@ $(document).ready(function () {
 
             $(this).parent().find('.chat-messages').append(
                 "<div class='chat-message'>&lt;" +
-                "<span class='chat-name me'>" + 
+                "<span class='chat-name me'>" +
                 Strophe.getNodeFromJid(WebClient.connection.jid) +
                 "</span>&gt;<span class='chat-text'>" +
                 body +
@@ -376,15 +376,15 @@ $(document).ready(function () {
                 $('#chat-' + jid_id).append(
                     "<div class='chat-messages'></div>" +
                     "<input type='text' class='chat-input'>");
-            
+
                 $('#chat-' + jid_id).data('jid', jid);
-            
+
                 $('#chat-area').tabs('select', '#chat-' + jid_id);
                 $('#chat-' + jid_id + ' input').focus();
-            
-            
+
+
                 $('#chat-jid').val('');
-                
+
                 $(this).dialog('close');
             }
         }
@@ -435,7 +435,7 @@ $(document).bind('contact_added', function (ev, data) {
     var iq = $iq({type: "set"}).c("query", {xmlns: "jabber:iq:roster"})
         .c("item", data);
     WebClient.connection.sendIQ(iq);
-    
+
     var subscribe = $pres({to: data.jid, "type": "subscribe"});
     WebClient.connection.send(subscribe);
 });
